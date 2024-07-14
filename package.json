@@ -26,12 +26,7 @@
   "homepage": "https://github.com/hqn03/nodejs_blog#readme",
   "description": "",
   "lint-staged": {
-    "src/**/*/{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
