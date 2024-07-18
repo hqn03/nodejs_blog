@@ -1,3 +1,4 @@
+const { query } = require('express');
 const Course = require('../models/Course');
 
 class CourseController {
@@ -27,6 +28,27 @@ class CourseController {
                 res.redirect('/');
             })
             .catch((error) => {});
+    }
+
+    // [GET] /courses/:id/edit
+    edit(req, res, next) {
+        Course.findById(req.params.id)
+            .lean()
+            .then((course) => {
+                res.render('courses/edit', course);
+            })
+            .catch((error) => {});
+    }
+
+    // [PUT] /courses/:id
+    update(req, res, next) {
+        const formData = req.body;
+        formData.image = `https://i.ytimg.com/vi/${req.body.videoId}/hqdefault.jpg`;
+        Course.findByIdAndUpdate(req.params.id, formData, { lean: true })
+            .then((query) => {
+                res.redirect('/me/stored/courses');
+            })
+            .catch();
     }
 }
 
