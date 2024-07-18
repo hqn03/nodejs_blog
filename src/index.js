@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
+const methodOverride = require('method-override');
 const handlebars = require('express-handlebars');
 const { execPath } = require('process');
 const app = express();
@@ -21,11 +22,24 @@ app.use(
 );
 app.use(express.json());
 
+//Add PUT,PATH,DELETE method
+app.use(methodOverride('_method'));
+
 //HTTP logger
 // app.use(morgan('combined'));
 
 //Template engine
-app.engine('hbs', handlebars.engine({ extname: '.hbs' }));
+app.engine(
+    'hbs',
+    handlebars.engine({
+        extname: '.hbs',
+        helpers: {
+            sum: (a, b) => {
+                return a + b;
+            },
+        },
+    }),
+);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources', 'views'));
 
