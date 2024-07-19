@@ -25,7 +25,7 @@ class CourseController {
         course
             .save()
             .then(() => {
-                res.redirect('/');
+                res.redirect('/me/stored/courses');
             })
             .catch((error) => {});
     }
@@ -51,8 +51,26 @@ class CourseController {
             .catch();
     }
 
+    // SOFT-DELETE
     // [DELETE] /courses/:id
     delete(req, res, next) {
+        Course.deleteById(req.params.id)
+            .lean()
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+
+    // [PATCH] /courses/:id/restore
+    restore(req, res, next) {
+        Course.restore({ _id: req.params.id })
+            .lean()
+            .then(() => res.redirect('back'))
+            .catch(next);
+    }
+
+    // FORCE-DELETE
+    // [DELETE] /courses/:id/force
+    forceDelete(req, res, next) {
         Course.findByIdAndDelete(req.params.id)
             .then(() => res.redirect('back'))
             .catch(next);
